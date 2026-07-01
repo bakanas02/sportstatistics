@@ -1,21 +1,26 @@
 from functools import wraps
-
+import os
+import pyodbc
+from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
 from datetime import datetime
 import pyodbc
 import time
 
+load_dotenv()
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Database connection settings
-server = r'Yelzhan\SQLEXPRESS'
-database = 'UFC'  # Your database name
-username = 'sa'
-password = 'elzhan2002'
+server = os.getenv('DB_SERVER')
+database = os.getenv('DB_NAME')
+username = os.getenv('DB_USER')
+password = os.getenv('DB_PASSWORD')
 
 conn = pyodbc.connect(
-    'DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + database + ';UID=' + username + ';PWD=' + password)
+    f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+)
 cursor = conn.cursor()
 
 @app.route('/')
