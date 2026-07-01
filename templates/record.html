@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fights.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form action="/add_record" method="post">
+                    <label for="fighter_id">Fighter ID:</label><br>
+                    <input type="text" id="fighter_id" name="fighter_id" placeholder="Fighter ID" required><br>
+
+                    <label for="statistics">Statistics:</label><br>
+                    <input type="text" id="statistics" name="statistics" placeholder="Statistics" required><br>
+
+                    <label for="ko">KO:</label><br>
+                    <input type="number" id="ko" name="ko" placeholder="KO" required><br>
+
+                    <label for="submishen">Submishen:</label><br>
+                    <input type="number" id="submishen" name="submishen" placeholder="Submishen" required><br>
+
+                    <label for="decision">Decision:</label><br>
+                    <input type="number" id="decision" name="decision" placeholder="Decision" required><br>
+
+                    <button type="submit" class="add-record-button">Add Record</button>
+                </form>
+            </div>
+        </div>
+
+        {% for record in records %}
+        <div class="card">
+            <div class="card-body">
+                <form id="update_form_{{ record.RecordID }}" action="/update_record/{{ record.RecordID }}" method="post">
+                    <label for="fighter_id_{{ record.RecordID }}">Fighter ID:</label><br>
+                    <input type="text" id="fighter_id_{{ record.RecordID }}" name="fighter_id" value="{{ record.FighterID }}" required><br>
+
+                    <label for="statistics_{{ record.RecordID }}">Statistics:</label><br>
+                    <input type="text" id="statistics_{{ record.RecordID }}" name="statistics" value="{{ record.Statistics }}" required><br>
+
+                    <label for="ko_{{ record.RecordID }}">KO:</label><br>
+                    <input type="number" id="ko_{{ record.RecordID }}" name="ko" value="{{ record.KO }}" required><br>
+
+                    <label for="submishen_{{ record.RecordID }}">Submishen:</label><br>
+                    <input type="number" id="submishen_{{ record.RecordID }}" name="submishen" value="{{ record.Submishen }}" required><br>
+
+                    <label for="decision_{{ record.RecordID }}">Decision:</label><br>
+                    <input type="number" id="decision_{{ record.RecordID }}" name="decision" value="{{ record.Decision }}" required><br>
+
+                    <button type="submit" class="update-button">Update</button>
+                </form>
+                <form id="delete_form_{{ record.RecordID }}" action="/delete_record/{{ record.RecordID }}" method="post">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+

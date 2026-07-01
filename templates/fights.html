@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fights</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fights.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Display flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="notification {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="card">
+            <div class="card-body">
+                <form action="/add_fight" method="post">
+                    <label for="event_id">Event ID:</label><br>
+                    <input type="text" id="event_id" name="event_id" placeholder="Event ID" required><br>
+
+                    <label for="fighter1_id">Fighter 1 ID:</label><br>
+                    <input type="text" id="fighter1_id" name="fighter1_id" placeholder="Fighter 1 ID" required><br>
+
+                    <label for="fighter2_id">Fighter 2 ID:</label><br>
+                    <input type="text" id="fighter2_id" name="fighter2_id" placeholder="Fighter 2 ID" required><br>
+
+                    <label for="winner_name">Winner Name:</label><br>
+                    <input type="text" id="winner_name" name="winner_name" placeholder="Winner Name"><br>
+
+                    <label for="finish_type">Finish Type:</label><br>
+                    <input type="text" id="finish_type" name="finish_type" placeholder="Finish Type"><br>
+
+                    <label for="record_id">Record ID:</label><br>
+                    <input type="text" id="record_id" name="record_id" placeholder="Record ID" required><br>
+
+                    <button type="submit" class="add-fight-button">Add Fight</button>
+                </form>
+            </div>
+        </div>
+
+        {% for fight in fights %}
+        <div class="card">
+            <div class="card-body">
+                <form id="update_form_{{ fight.FightID }}" action="/update_fight/{{ fight.FightID }}" method="post">
+                    <label for="event_id_{{ fight.FightID }}">Event ID:</label><br>
+                    <input type="text" id="event_id_{{ fight.FightID }}" name="event_id" value="{{ fight.EventID }}" required><br>
+
+                    <label for="fighter1_id_{{ fight.FightID }}">Fighter 1 ID:</label><br>
+                    <input type="text" id="fighter1_id_{{ fight.FightID }}" name="fighter1_id" value="{{ fight.Fighter1ID }}" required><br>
+
+                    <label for="fighter2_id_{{ fight.FightID }}">Fighter 2 ID:</label><br>
+                    <input type="text" id="fighter2_id_{{ fight.FightID }}" name="fighter2_id" value="{{ fight.Fighter2ID }}" required><br>
+
+                    <label for="winner_name_{{ fight.FightID }}">Winner Name:</label><br>
+                    <input type="text" id="winner_name_{{ fight.FightID }}" name="winner_name" value="{{ fight.WinnerName }}"><br>
+
+                    <label for="finish_type_{{ fight.FightID }}">Finish Type:</label><br>
+                    <input type="text" id="finish_type_{{ fight.FightID }}" name="finish_type" value="{{ fight.FinishType }}"><br>
+
+                    <label for="record_id_{{ fight.FightID }}">Record ID:</label><br>
+                    <input type="text" id="record_id_{{ fight.FightID }}" name="record_id" value="{{ fight.RecordID }}" required><br>
+
+                    <button type="submit" class="update-button">Update</button>
+                </form>
+                <form id="delete_form_{{ fight.FightID }}" action="/delete_fight/{{ fight.FightID }}" method="post">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // JavaScript function to automatically dismiss flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+            var notification = document.querySelector('.notification');
+            if (notification) {
+                setTimeout(function () {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

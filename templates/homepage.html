@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+<body>
+    <button id="sortButton" onclick="toggleSortOptions()">Sort</button>
+    <div id="sortOptions">
+        <ul>
+            <li><a href="/fighters?sort=name">Sort by Name</a></li>
+            <li><a href="/fighters?sort=age">Sort by Age</a></li>
+            <!-- Add more sorting options as needed -->
+        </ul>
+    </div>
+
+    {% if message %}
+        <div class="notification">
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+
+    <!-- Check if there are flash messages indicating permission errors -->
+    {% with permission_error = session.pop('no_permission', None) %}
+        {% if permission_error %}
+            <div class="notification">
+                <p>You do not have permission to perform this operation.</p>
+            </div>
+        {% endif %}
+    {% endwith %}
+    <button id="logoutButton" onclick="window.location.href='/logout'">Logout</button>
+
+    <audio autoplay loop>
+        <source src="/static/Tau.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="container">
+        <div class="column">
+            <div class="card" onclick="window.location.href='/fighters'">
+                <img class="card-img" src="{{ url_for('static', filename='shavkat.jpg') }}" alt="Fighters">
+                <div class="card-content">FIGHTERS</div>
+            </div>
+            <div class="card" onclick="window.location.href='/record'">
+                <img class="card-img" src="{{ url_for('static', filename='conor.jpg') }}" alt="Record">
+                <div class="card-content">RECORD</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card" onclick="window.location.href='/fights'">
+                <img class="card-img" src="{{ url_for('static', filename='fight.jpg') }}" alt="Fights">
+                <div class="card-content">FIGHTS</div>
+            </div>
+            <div class="card" onclick="window.location.href='/events'">
+                <img class="card-img" src="{{ url_for('static', filename='events.jpg') }}" alt="Events">
+                <div class="card-content">EVENTS</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSortOptions() {
+            var sortOptions = document.getElementById("sortOptions");
+            if (sortOptions.style.display === "none") {
+                sortOptions.style.display = "block";
+            } else {
+                sortOptions.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

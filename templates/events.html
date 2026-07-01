@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fighters.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <form action="/add_event" method="post">
+                    <label for="name">Name:</label><br>
+                    <input type="text" id="name" name="name" placeholder="Name" required><br>
+
+                    <label for="date">Date:</label><br>
+                    <input type="text" id="date" name="date" placeholder="YYYY-MM-DD" required><br>
+
+                    <label for="location">Location:</label><br>
+                    <input type="text" id="location" name="location" placeholder="Location" required><br>
+
+                    <button type="submit" class="add-event-button">Add Event</button>
+                </form>
+            </div>
+        </div>
+
+        {% for event in events %}
+        <div class="card">
+            <div class="card-body">
+                <form id="update_form_{{ event.EventID }}" action="/update_event/{{ event.EventID }}" method="post">
+                    <label for="name_{{ event.EventID }}">Name:</label><br>
+                    <input type="text" id="name_{{ event.EventID }}" name="name" value="{{ event.Name }}" required><br>
+
+                    <label for="date_{{ event.EventID }}">Date:</label><br>
+                    <input type="text" id="date_{{ event.EventID }}" name="date" value="{{ event.Date }}" required><br>
+
+                    <label for="location_{{ event.EventID }}">Location:</label><br>
+                    <input type="text" id="location_{{ event.EventID }}" name="location" value="{{ event.Location }}" required><br>
+
+                    <button type="submit" class="update-button">Update</button>
+                </form>
+                <form id="delete_form_{{ event.EventID }}" action="/delete_event/{{ event.EventID }}" method="post">
+                    <button type="submit" class="delete-button">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
