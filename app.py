@@ -1,27 +1,40 @@
-from functools import wraps
 import os
 import pyodbc
-from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for, request, session, flash, jsonify
+from dotenv import load_dotenv
+from functools import wraps
 from datetime import datetime
-import pyodbc
-import time
 
+# Загружаем переменные из файла .env
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = os.getenv('SECRET_KEY', 'default_secret_key') # Лучше хранить и секретный ключ в .env
 
-# Database connection settings
-server = os.getenv('DB_SERVER')
-database = os.getenv('DB_NAME')
-username = os.getenv('DB_USER')
-password = os.getenv('DB_PASSWORD')
+# Получаем настройки базы данных из переменных окружения
+db_server = os.getenv('DB_SERVER')
+db_name = os.getenv('DB_NAME')
+db_user = os.getenv('DB_USER')
+db_password = os.getenv('DB_PASSWORD')
 
-conn = pyodbc.connect(
-    f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
-)
-cursor = conn.cursor()
+def get_db_connection():
+    """Функция для создания подключения к базе данных"""
+    conn_str = (
+        f'DRIVER={{SQL Server}};'
+        f'SERVER={db_server};'
+        f'DATABASE={db_name};'
+        f'UID={db_user};'
+        f'PWD={db_password}'
+    )
+    return pyodbc.connect(conn_str)
+
+# Инициализируем соединение
+try:
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    print("Успешное подключение к базе данных!")
+except Exception as e:
+    print(f"Ошибка подключения к базе данных: {e}")
 
 @app.route('/')
 def index():
